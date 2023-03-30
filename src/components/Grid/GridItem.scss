@@ -1,0 +1,27 @@
+.grid__item {
+  border: 4px solid #000;
+  //aspect-ratio: 3/2;
+  font-size: 20px;
+  padding: var(--padding);
+  will-change: transform;
+  //transform: translate3d(2.4995%, 2.5005%, 0px) scale3d(1, 1, 1) rotateX(22.4955deg) rotateY(5deg) rotateZ(0deg) skew(0deg, 0deg);
+  transform-style: preserve-3d;
+  &:hover {
+    cursor: pointer;
+  }
+  * {
+    text-decoration: none;
+    color: inherit;
+  }
+  .grid__item--new {
+    font-size: 100px;
+    font-weight: 300;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+}
+

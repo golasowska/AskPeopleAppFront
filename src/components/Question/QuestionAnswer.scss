@@ -1,0 +1,31 @@
+li {
+  height: var(--input-height);
+  position: relative;
+  width: 100%;
+  input {
+    border: none;
+    width: 100%;
+    border-bottom: 4px solid #000;
+  }
+  button {
+    min-width: var(--input-height);
+    min-height: var(--input-height);
+    position: absolute;
+    background-color: transparent;
+    appearance: none;
+    font-family: inherit;
+    font-size: var(--padding);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    bottom: 0;
+    transform: translateX(100%);
+    &:hover:not([disabled]) {
+      background-color: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}

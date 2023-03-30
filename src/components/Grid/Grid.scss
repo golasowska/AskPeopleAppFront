@@ -1,0 +1,10 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: var(--padding) 2vw;
+    grid-template-rows: auto;
+    grid-column-gap: 3vw;
+    grid-row-gap: 3vw;
+    transform: perspective(686px);
+    margin-bottom: calc(2 * var(--padding));
+}

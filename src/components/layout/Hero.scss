@@ -1,0 +1,39 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100vh - var(--header-height));
+  padding: var(--padding);
+  position: relative;
+  h2 {
+    text-transform: uppercase;
+    -webkit-text-stroke: 5px #000;
+    line-height: 0.9;
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:nth-of-type(1) {
+      font-size: clamp(36px, 40vh, 30vw);
+      color: transparent;
+      &:hover {
+        color: var(--color-main);
+      }
+    }
+
+    &:nth-of-type(2) {
+      font-size: clamp(36px, 18vh, 16vw);
+      margin-left: auto;
+      color: var(--color-main);
+    }
+
+    &:nth-of-type(3) {
+      font-size: clamp(36px, 30vh, 21.5vw);
+      color: transparent;
+      &:hover {
+        color: var(--color-main);
+      }
+    }
+  }
+}
