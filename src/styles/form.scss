@@ -80,19 +80,43 @@ form {
     position: relative;
     &:hover {
       cursor: pointer;
-      background-color: #000;
-    }
-    &:checked {
-      background-color: #000;
     }
   }
 
   input[type="radio"] {
     border-radius: 50%;
+    &:checked {
+      background-color: #000;
+    }
+    &:hover {
+      background-color: #000;
+    }
   }
 
   input[type="checkbox"] {
+    &:before {
+      display: block;
+      position: absolute;
+      content: 'X';
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: calc(0.75 * var(--input-height));
+      line-height: 1;
+      padding: 0;
+      left: 50%;
+      top: 50%;
+      transform: translate(-52%, -50%) scaleX(1.3);
+      opacity: 0;
+      z-index: -1;
+    }
+    &:checked {
+      &:before {
+        opacity: 1;
+      }
+    }
+    &:hover {
 
+    }
   }
 
   select {

@@ -21,7 +21,7 @@ export const AnswerView = () => {
     useEffect(() => {
         setFormData({
             name: 'Jaki owoc jest najsmaczniejszy ?',
-            type: 'radio',
+            type: 'checkbox',
             answers: [
                 {id: 1231123123, added: true, text: 'Jabłko', votes: 75},
                 {id: 12314234234, added: true, text: 'Gruszka', votes: 53},
@@ -33,20 +33,26 @@ export const AnswerView = () => {
 
     return <>
         <div className='title__wrapper'>
-            <Title>Answer a question</Title>
+            <Title>What people said</Title>
             <Arrow/>
         </div>
         <div className="wrapper">
             <div className="container">
                 <h2 className="answer__title">{formData.name}</h2>
-                <label className="switch">
-                    <input type="checkbox" onChange={() => setShowPie(prev => !prev)}/>
-                    <span></span>
-                </label>
+                {formData.type !== 'open' &&
+                    <label className="switch">
+                        <input type="checkbox" onChange={() => setShowPie(prev => !prev)}/>
+                        <span></span>
+                    </label>
+                }
             </div>
             {formData.type === 'open' && <AnswerTextResults formData={formData}/>}
             {(formData.type !== 'open' && showPie) && <AnswerGraphPie formData={formData}/>}
             {(formData.type !== 'open' && !showPie) && <AnswerGraph formData={formData}/>}
+            <div className='title__wrapper border--top'>
+                <Title>Answer a question</Title>
+                <Arrow/>
+            </div>
             <AnswerForm formData={formData}/>
         </div>
     </>

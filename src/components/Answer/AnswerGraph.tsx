@@ -21,8 +21,7 @@ export const options = {
             display: false,
         },
         title: {
-            display: true,
-            text: 'Chart.js Bar Chart',
+            display: false,
         },
     },
 };
