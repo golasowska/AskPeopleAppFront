@@ -1,9 +1,9 @@
 import '../../styles/form.scss';
 import React from "react";
-import {QuestionInterface} from "../../interfaces/question-interface";
+import { QuestionEntity } from 'types';
 
 interface Props {
-    formData: QuestionInterface;
+    formData: QuestionEntity;
 }
 
 export const AnswerFormInputs = (props : Props) => {
@@ -11,7 +11,7 @@ export const AnswerFormInputs = (props : Props) => {
    return <>
         <p className='form__question'>{props.formData.name}</p>
         {
-            props.formData.answers.map(a => <label className="label__row" key={a.text}>
+            props.formData.answers && props.formData.answers.map(a => <label className="label__row" key={a.text}>
                 <input name={props.formData.name} type={props.formData.type} value={a.text}/>{a.text}
             </label>)
         }

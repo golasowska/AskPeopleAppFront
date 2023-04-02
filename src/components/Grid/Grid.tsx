@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import './Grid.scss';
+import {SimpleQuestionEntity} from 'types';
 
 import {GridItem} from "./GridItem";
 import {Link} from "react-router-dom";
 
-const questions = [
+const questionss = [
     {
         "id": 123,
         "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque debitis, enim id illo iure rerum saepe tempora.",
@@ -41,22 +42,23 @@ const questions = [
 ]
 
 export const Grid = () => {
-    const [cord, setCord] = useState<{ x: number, y: number }>({x: 0, y: 0});
-    useEffect(() => {
-        const handler = (e: MouseEvent) => {
-            setCord(data => ({...data, x: (e.clientX * 0.015), y: e.clientY * 0.015}));
-        };
-        document.addEventListener('mousemove', handler);
-        return () => document.removeEventListener('mouseleave', handler);
-    }, []);
+    const [questions, setQuestions] = useState<SimpleQuestionEntity[]>([]);
 
+    useEffect(() => {
+        ( async() => {
+            const res = await fetch('http://localhost:3001/questions');
+            const data = await res.json();
+            setQuestions(data);
+        })();
+    }, []);
+    // @TODO - when using tags, dependency = tag
 
     return <div className="grid">
-        <GridItem cord={cord}>
-            <Link to='/add' className="grid__item--new">+</Link>
+        <GridItem>
+            <Link to='/questions/add' className="grid__item--new">+</Link>
         </GridItem>
         {
-            questions.map(({id, text}, idx) => <GridItem key={id} cord={cord}><Link to={`/${id}`} >{text}</Link></GridItem>)
+            questions.map(({id, name}, idx) => <GridItem key={id}><Link to={`/questions/${id}`} ><h2>{name}</h2></Link></GridItem>)
         }
     </div>
 }

@@ -1,20 +1,20 @@
 import './AnswerGraph.scss';
 
-import {QuestionInterface} from "../../interfaces/question-interface";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 
 import {Pie} from 'react-chartjs-2';
 import {useEffect, useState} from "react";
+import { QuestionEntity } from 'types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface Props {
-    formData: QuestionInterface;
+    formData: QuestionEntity;
 }
 
 export const AnswerGraphPie = (props: Props) => {
 
-    const {name, answers} = props.formData;
+    const {answers} = props.formData;
 
     const [data, setData] = useState<any>({
         labels: [],
@@ -34,13 +34,15 @@ export const AnswerGraphPie = (props: Props) => {
             let data: number[] = [];
             let backgroundColor: string[] = [];
             let borderColor: string[] = [];
-            answers.forEach(a => {
-                labels = [...labels, a.text];
-                data = [...data, a.votes];
-                const color = `${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}`;
-                backgroundColor = [...backgroundColor, `rgba(${color}, 0.5)`];
-                borderColor = [...backgroundColor, `rgba(${color}, 1)`];
-            });
+            if (answers) {
+                answers.forEach(a => {
+                    labels = [...labels, a.text];
+                    data = [...data, a.votes];
+                    const color = `${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}`;
+                    backgroundColor = [...backgroundColor, `rgba(${color}, 0.5)`];
+                    borderColor = [...backgroundColor, `rgba(${color}, 1)`];
+                });
+            }
 
             setData((prev: {
                 labels: (string | number)[],

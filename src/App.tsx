@@ -12,8 +12,9 @@ export const App = () => {
         <Header/>
         <Routes>
             <Route path="/" element={<Main/>} />
-            <Route path="/add" element={<QuestionForm/>} />
-            <Route path="/:id" element={<AnswerView/>} />
+            <Route path="/questions" element={<Main/>} />
+            <Route path="/questions/add" element={<QuestionForm/>} />
+            <Route path="/questions/:id" element={<AnswerView/>} />
         </Routes>
     </>
   );
