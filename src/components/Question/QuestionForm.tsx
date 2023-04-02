@@ -7,17 +7,18 @@ import '../../styles/form.scss';
 
 import {Button} from "../common/Button";
 import {QuestionAnswer} from "./QuestionAnswer";
-import {QuestionInterface} from "../../interfaces/question-interface";
-import {Answer} from "../../interfaces/answer-interface";
+import {AnswerEntityInForm, NewQuestionEntity, AnswerEntity } from "types";
+import {apiUrl} from "../../config/api";
 
 export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
-    const [form, setForm] = useState<QuestionInterface>({
+    const [id, setId] = useState('');
+    const [answersCount, setAnswersCount] = useState<AnswerEntityInForm[]>([]);
+    const [form, setForm] = useState<NewQuestionEntity>({
         name: '',
         type: 'open',
-        answers: [],
+        answers: null,
     });
-    // const [answersCount, setAnswersCount] = useState<Question[]>([]);
 
     const updateForm = (key: string, value: any) => {
         setForm(form => ({
@@ -29,50 +30,65 @@ export const QuestionForm = () => {
     const changeQuestionType = (value: string) => {
         updateForm('type', value);
         if (value !== 'open') {
-            // setAnswersCount(prev => [...prev, {id: 0, added: true, text: ''}]);
-            setForm(form => ({...form, answers: [{id: 0, added: true, text: '', votes: 0,}]}));
+            setAnswersCount(prev => [{id: 0, added: true, text: ''}]);
         }
     }
 
-    const createOrRemoveInput = (q: Answer | null, prevQ: Answer, update: boolean) => {
+    const createOrRemoveInput = (q: AnswerEntityInForm | null, prevQ: AnswerEntityInForm, update: boolean) => {
         if (q !== null) {
             //remove
-            // setAnswersCount(prev => prev.filter((el) => el.id !== q.id));
-            setForm(form => ({...form, answers: [...form.answers.filter((el) => el.id !== q.id)]}));
+            setAnswersCount(prev => prev.filter((el) => el.id !== q.id));
         } else {
             //add previous question and add new empty question
             if (update) {
-                // setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el)]);
-                setForm(form => ({...form, answers: [...form.answers.map((el) => el.id === prevQ.id ? prevQ : el)]}));
+                setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el)]);
             } else {
-                // setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el), {
-                //     id: prev[prev.length - 1].id + 1,
-                //     added: true,
-                //     text: ''
-                // }]);
-                setForm(form => ({
-                    ...form,
-                    answers: [...form.answers.map((el) => el.id === prevQ.id ? prevQ : el), {
-                        id: form.answers[form.answers.length - 1].id + 1,
-                        added: true,
-                        text: '',
-                        votes: 0,
-                    }]
-                }));
+                setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el), {
+                    id: prev[prev.length - 1].id + 1,
+                    added: true,
+                    text: ''
+                }]);
             }
         }
     };
 
-    const submitForm = (e: SyntheticEvent) => {
+    const submitForm = async (e: SyntheticEvent) => {
         e.preventDefault();
-        console.log(form);
-        setTimeout(() => {
-            setForm({ name: '',
-                type: 'open',
-                answers: [],})
-        }, 2000)
-
+        setLoading(true);
+        // @TODO validation!
+        const ans = answersCount.length > 0 ? answersCount.map(a => ({text: a.text, id: '', votes: 0})) : null;
+        setForm(form => ({...form, answers: ans}));
+        // console.log(form);
+        try {
+            const res = await fetch(`${apiUrl}/questions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...form, answers: ans
+                }),
+            });
+            const data = await res.json();
+            setId(data.id);
+        } finally {
+            setLoading(false);
+            // setForm(prev => ({...prev, name: '', type: 'open', answers: null}));
+            setAnswersCount([]);
+        }
     };
+
+    if(loading) {
+        return <h2>Your question is being submitted...</h2>
+    }
+
+    if(id) {
+        const text = `Your question "${form.name}" has been submitted`
+        return <div className='title__wrapper'>
+            <Title>{text}</Title>
+            <Arrow/>
+        </div>
+    }
 
     return <>
         <div className='title__wrapper'>
@@ -113,7 +129,7 @@ export const QuestionForm = () => {
                             Add possible answer: <br/>
                             <ol>
                                 {
-                                    form.answers.map((a) => <QuestionAnswer key={a.id} idx={a.id}
+                                    answersCount.map((a) => <QuestionAnswer key={a.id} idx={a.id}
                                                                             createOrRemoveInput={createOrRemoveInput}/>)
                                 }
 
@@ -122,7 +138,6 @@ export const QuestionForm = () => {
                     </div>
                 }
                 <Button text="Send &#8594;" type="submit"/>
-                <p>{form.type}, {form.name}</p>
             </form>
         }
     </>

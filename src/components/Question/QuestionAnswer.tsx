@@ -23,7 +23,7 @@ export const QuestionAnswer = ({createOrRemoveInput, idx}: Props) => {
             setText('-');
             createOrRemoveInput(null, {id: idx, added, text: value,}, false);
         } else {
-            createOrRemoveInput({id: idx, added, text: value, votes: 0}, {id: idx, added, text: value,votes: 0,}, false);
+            createOrRemoveInput({id: idx, added, text: value}, {id: idx, added, text: value}, false);
         }
     };
 
