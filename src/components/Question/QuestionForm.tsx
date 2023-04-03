@@ -7,14 +7,14 @@ import '../../styles/form.scss';
 
 import {Button} from "../common/Button";
 import {QuestionAnswer} from "./QuestionAnswer";
-import {AnswerEntityInForm, NewQuestionEntity, AnswerEntity } from "types";
+import {AnswerEntityInForm, NewQuestionEntityInForm } from "types";
 import {apiUrl} from "../../config/api";
 
 export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
     const [id, setId] = useState('');
     const [answersCount, setAnswersCount] = useState<AnswerEntityInForm[]>([]);
-    const [form, setForm] = useState<NewQuestionEntity>({
+    const [form, setForm] = useState<NewQuestionEntityInForm>({
         name: '',
         type: 'open',
         answers: null,
@@ -56,7 +56,7 @@ export const QuestionForm = () => {
         e.preventDefault();
         setLoading(true);
         // @TODO validation!
-        const ans = answersCount.length > 0 ? answersCount.map(a => ({text: a.text, id: '', votes: 0})) : null;
+        const ans = answersCount.length > 0 ? answersCount.map(a => ({text: a.text})) : null;
         setForm(form => ({...form, answers: ans}));
         // console.log(form);
         try {

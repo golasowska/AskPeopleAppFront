@@ -1,5 +1,5 @@
 import '../../styles/form.scss';
-import React, {SyntheticEvent} from "react";
+import React, {SyntheticEvent, useState} from "react";
 import {Button} from "../common/Button";
 import {AnswerFormTextarea} from "./AnswerFormTextarea";
 import {AnswerFormInputs} from "./AnswerFormInputs";
@@ -8,20 +8,31 @@ import { QuestionEntity } from 'types';
 
 interface Props {
     formData: QuestionEntity;
+    submitForm: any;
 }
 
 export const AnswerForm = (props : Props) => {
 
-    const submitForm = (e: SyntheticEvent) => {
+    const [vote, setVote] = useState<string[]>([]);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const { formData, submitForm } = props;
+
+    const handleSubmitForm = async (e: SyntheticEvent) => {
         e.preventDefault();
-        console.log(e);
+        submitForm(vote);
+        setFormSubmitted(true);
+        // console.log('vote', vote);
     };
 
-    return <form onSubmit={submitForm}>
+    if (formSubmitted) {
+        return <h2>Thanks for yout vote :) </h2>
+    }
+
+    return <form onSubmit={handleSubmitForm}>
                 <div className="form__control">
                     {props.formData.type === 'open' ?
-                        <AnswerFormTextarea name={props.formData.name} /> :
-                        <AnswerFormInputs formData={props.formData} />
+                        <AnswerFormTextarea setVote={setVote} name={formData.name} /> :
+                        <AnswerFormInputs setVote={setVote} formData={formData} />
                     }
                 </div>
                 <Button text="Send &#8594;" type="submit"/>

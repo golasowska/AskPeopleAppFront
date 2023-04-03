@@ -3,13 +3,16 @@ import React from "react";
 
 interface Props {
     name: string;
+    setVote: any;
 }
 
 export const AnswerFormTextarea = (props: Props) => {
 
     return <>
         <p className='form__question'>{props.name}</p>
-        <textarea name="name" cols={30} rows={10}></textarea>
+        <textarea name="name" cols={30} rows={10} onChange={(e) => {
+            props.setVote([e.target.value]);
+        }}></textarea>
     </>
 
 }

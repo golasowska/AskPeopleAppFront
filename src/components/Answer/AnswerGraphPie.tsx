@@ -57,7 +57,7 @@ export const AnswerGraphPie = (props: Props) => {
                 datasets: [{...prev.datasets, data, backgroundColor, borderColor,borderWidth: 2,}]
             }));
         },
-        []);
+        [answers]);
 
     return <div className="graph__container">
         <div className="graph__pie">

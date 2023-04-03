@@ -1,13 +1,14 @@
 import './AnswerView.scss';
 import {Title} from "../common/Title";
 import {Arrow} from "../common/Arrow";
-import React, {useEffect, useState} from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import {AnswerForm} from "./AnswerForm";
 import {AnswerGraphPie} from "./AnswerGraphPie";
 import {AnswerTextResults} from "./AnswerTextResults";
 import {AnswerGraph} from "./AnswerGraph";
 import {QuestionEntity } from 'types';
 import {useParams} from "react-router-dom";
+import {apiUrl} from "../../config/api";
 
 export const AnswerView = () => {
     const [question, setQuestion] = useState<QuestionEntity | null>(null);
@@ -16,12 +17,28 @@ export const AnswerView = () => {
 
     useEffect(() => {
         ( async() => {
-            const res = await fetch(`http://localhost:3001/questions/${id}`);
+            const res = await fetch(`${apiUrl}/questions/${id}`);
             const data = await res.json();
             // console.log(data);
             setQuestion(data);
         })();
     }, []);
+
+    const submitForm = async (vote: string) => {
+        // console.log(vote);
+        const res = await fetch(`${apiUrl}/questions/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                answerBody: vote
+            }),
+        });
+        const data = await res.json();
+        // console.log(data);
+        setQuestion(data);
+    };
 
     if(!question) {
         return <h2>Question with ID {id} doesn't exists :( </h2>
@@ -50,7 +67,7 @@ export const AnswerView = () => {
                 <Title>Answer a question</Title>
                 <Arrow/>
             </div>
-            <AnswerForm formData={question}/>
+            <AnswerForm submitForm={submitForm} formData={question}/>
         </div>
     </>
 }
