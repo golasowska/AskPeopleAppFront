@@ -4,6 +4,7 @@ import {Button} from "../common/Button";
 import {AnswerFormTextarea} from "./AnswerFormTextarea";
 import {AnswerFormInputs} from "./AnswerFormInputs";
 import { QuestionEntity } from 'types';
+import {InfoMessage} from "../common/InfoMessage";
 
 
 interface Props {
@@ -25,7 +26,9 @@ export const AnswerForm = (props : Props) => {
     };
 
     if (formSubmitted) {
-        return <h2>Thanks for yout vote :) </h2>
+        return <InfoMessage to={true}>
+            Thanks for your vote :)
+        </InfoMessage>;
     }
 
     return <form onSubmit={handleSubmitForm}>

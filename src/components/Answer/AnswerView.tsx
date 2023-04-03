@@ -9,6 +9,7 @@ import {AnswerGraph} from "./AnswerGraph";
 import {QuestionEntity } from 'types';
 import {useParams} from "react-router-dom";
 import {apiUrl} from "../../config/api";
+import {InfoMessage} from "../common/InfoMessage";
 
 export const AnswerView = () => {
     const [question, setQuestion] = useState<QuestionEntity | null>(null);
@@ -60,9 +61,12 @@ export const AnswerView = () => {
                     </label>
                 }
             </div>
-            {(question.answers && question.type === 'open') && <AnswerTextResults formData={question}/>}
-            {((question.answers && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/>}
-            {((question.answers && question.type !== 'open') && !showPie) && <AnswerGraph formData={question}/>}
+            {
+                !question.answers !== null && <InfoMessage to={false}>be the first person to answer this question :)</InfoMessage>
+            }
+            {(question.answers !== null && question.type === 'open') && <AnswerTextResults formData={question}/>}
+            {((question.answers !== null && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/>}
+            {((question.answers !== null && question.type !== 'open') && !showPie) && <AnswerGraph formData={question}/>}
             <div className='title__wrapper border--top'>
                 <Title>Answer a question</Title>
                 <Arrow/>

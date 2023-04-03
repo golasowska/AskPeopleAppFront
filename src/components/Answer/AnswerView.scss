@@ -12,13 +12,13 @@
     width: 0;
     height: 0;
     &:checked + span {
-      background-color: #000;
+      background-color: var(--color-text);
       &:before {
         transform: translateX(26px);
       }
     }
     &:focus + span {
-      box-shadow: 0 0 1px #000;
+      box-shadow: 0 0 1px var(--color-text);
     }
   }
   span {

@@ -1,10 +1,16 @@
 import './Header.scss';
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 export const Header = () => {
     return <header>
-        <Link to='/'>Home</Link>
-        <Link to='/questions/add'>Ask</Link>
+        <NavLink to="/"
+                 className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>
+            Home
+        </NavLink>
+        <NavLink to="/questions/add"
+                 className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>
+            Ask
+        </NavLink>
         <Link to='/'>Answer</Link>
     </header>
 }

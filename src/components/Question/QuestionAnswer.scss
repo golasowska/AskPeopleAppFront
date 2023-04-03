@@ -5,7 +5,7 @@ li {
   input {
     border: none;
     width: 100%;
-    border-bottom: 4px solid #000;
+    border-bottom: 4px solid var(--color-text);
   }
   button {
     min-width: var(--input-height);
@@ -23,8 +23,8 @@ li {
     bottom: 0;
     transform: translateX(100%);
     &:hover:not([disabled]) {
-      background-color: #000;
-      color: #fff;
+      background-color: var(--color-text);
+      color: var(--bg-color);
       cursor: pointer;
     }
   }

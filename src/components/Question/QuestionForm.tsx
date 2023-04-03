@@ -9,6 +9,7 @@ import {Button} from "../common/Button";
 import {QuestionAnswer} from "./QuestionAnswer";
 import {AnswerEntityInForm, NewQuestionEntityInForm } from "types";
 import {apiUrl} from "../../config/api";
+import {InfoMessage} from "../common/InfoMessage";
 
 export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
@@ -79,15 +80,13 @@ export const QuestionForm = () => {
     };
 
     if(loading) {
-        return <h2>Your question is being submitted...</h2>
+        return <InfoMessage to={true}>Your question is being submitted...</InfoMessage>;
     }
 
     if(id) {
-        const text = `Your question "${form.name}" has been submitted`
-        return <div className='title__wrapper'>
-            <Title>{text}</Title>
-            <Arrow/>
-        </div>
+        return <InfoMessage to={true}>
+            Your question<span> " {form.name} " </span> has been submitted
+        </InfoMessage>;
     }
 
     return <>

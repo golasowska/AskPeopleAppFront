@@ -1,7 +1,8 @@
 .graph__container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 2 * var(--margin));
+  margin: var(--margin) auto;
 }
 
 .graph__pie {
