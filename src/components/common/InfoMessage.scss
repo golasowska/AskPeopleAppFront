@@ -22,5 +22,9 @@
   span {
     margin: 0 20px;
     color: var(--color-accent);
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
   }
 }

@@ -9,6 +9,15 @@ form {
   max-width: 720px;
 }
 
+.error {
+  color: var(--color-error);
+  display: block;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: none;
+}
+
 .form__control {
   width: 100%;
   display: flex;
@@ -28,7 +37,7 @@ form {
     &.form__question {
       font-size: 40px;
       text-transform: none;
-      margin-bottom: 1em;
+      margin-bottom: 0.5em;
     }
 
     &.label__row {
