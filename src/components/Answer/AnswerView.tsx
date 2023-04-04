@@ -1,7 +1,7 @@
 import './AnswerView.scss';
 import {Title} from "../common/Title";
 import {Arrow} from "../common/Arrow";
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AnswerForm} from "./AnswerForm";
 import {AnswerGraphPie} from "./AnswerGraphPie";
 import {AnswerTextResults} from "./AnswerTextResults";
@@ -13,6 +13,7 @@ import {InfoMessage} from "../common/InfoMessage";
 
 export const AnswerView = () => {
     const [question, setQuestion] = useState<QuestionEntity | null>(null);
+    const [info, setInfo] = useState('Thanks for your answer :)');
     const [showPie, setShowPie] = useState<boolean>(false);
     const {id} = useParams();
 
@@ -26,7 +27,6 @@ export const AnswerView = () => {
     }, []);
 
     const submitForm = async (vote: string) => {
-        // console.log(vote);
         const res = await fetch(`${apiUrl}/questions/${id}`, {
             method: 'PATCH',
             headers: {
@@ -37,12 +37,15 @@ export const AnswerView = () => {
             }),
         });
         const data = await res.json();
-        // console.log(data);
+        if(data.message) {
+            setInfo(data.message);
+            return;
+        }
         setQuestion(data);
     };
 
     if(!question) {
-        return <h2>Question with ID {id} doesn't exists :( </h2>
+        return <InfoMessage to={true}>{info}</InfoMessage>;
     }
 
     return <>
@@ -62,7 +65,7 @@ export const AnswerView = () => {
                 }
             </div>
             {
-                !question.answers !== null && <InfoMessage to={false}>be the first person to answer this question :)</InfoMessage>
+                question.answers === null && <InfoMessage to={false}>be the first person to answer this question :)</InfoMessage>
             }
             {(question.answers !== null && question.type === 'open') && <AnswerTextResults formData={question}/>}
             {((question.answers !== null && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/>}
@@ -71,7 +74,7 @@ export const AnswerView = () => {
                 <Title>Answer a question</Title>
                 <Arrow/>
             </div>
-            <AnswerForm submitForm={submitForm} formData={question}/>
+            <AnswerForm submitForm={submitForm} formData={question} info={info}/>
         </div>
     </>
 }

@@ -1,10 +1,12 @@
 import '../../styles/form.scss';
 import React, {ChangeEvent, useEffect, useState} from "react";
 import { QuestionEntity } from 'types';
+import {ErrorMessage} from "../common/ErrorMessage";
 
 interface Props {
     formData: QuestionEntity;
     setVote: any;
+    error: boolean;
 }
 
 export const AnswerFormInputs = (props : Props) => {
@@ -35,6 +37,9 @@ export const AnswerFormInputs = (props : Props) => {
                 />{a.text}
             </label>)
         }
+       {
+           props.error && <ErrorMessage>Please choose an answer before sending form :) </ErrorMessage>
+       }
     </>
 
 }

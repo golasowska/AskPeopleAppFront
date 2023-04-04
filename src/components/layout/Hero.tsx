@@ -15,7 +15,7 @@ export const Hero = () => {
             <h2>a question</h2>
             <h2>
                 answer
-                <span>answer the questions that others have asked, help others find the answer</span>
+                <span>answer the questions that others have asked, help others find the answer.</span>
             </h2>
             <Arrow/>
         </main>
