@@ -1,34 +1,80 @@
 import './QuestionAnswer.scss';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {NewQuestionEntityInForm} from 'types';
+import {ErrorMessage} from "../common/ErrorMessage";
 
 interface Props {
-    idx: number;
-    createOrRemoveInput: any;
+    setForm: any;
+    setError: any;
 }
 
-export const QuestionAnswer = ({createOrRemoveInput, idx}: Props) => {
-    const [added, setAdded] = useState(false);
-    const [text, setText] = useState('+');
-    const [value, setValue] = useState('');
+interface AnswerEntityInForm {
+    id: string;
+    text: string;
+    added: boolean;
+    buttonSign: string;
+}
 
-    const onChangeInputValue = ( text: string ) => {
-        setValue(text);
-        createOrRemoveInput(null, {id: idx, added, text: value,}, true);
+export const QuestionAnswer = ({setForm, setError}: Props) => {
+    const [answersCount, setAnswersCount] = useState<AnswerEntityInForm[]>([]);
+    const [answersError, setAnswersError] = useState<string>('');
+
+    const onChangeInputValue = (id: string, text: string) => {
+        setAnswersCount(prev => (prev.map(a => a.id === id ? {...a, text} : a)));
     }
 
-    const onClickHandler = () => {
-        if (value.trim().length < 1) return;
-        if(!added) {
-            setAdded(true);
-            setText('-');
-            createOrRemoveInput(null, {id: idx, added, text: value,}, false);
+    const onClickHandler = (id: string, text: string, added: boolean) => {
+        if (text.trim().length < 1 || answersError.length > 0) return;
+        if (!added) {
+            // add
+            const idX = String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '');
+            setAnswersCount(prev => [...prev.map( a => a.id === id ? {...a, added: true, buttonSign: '-'} : a), {
+                id: idX,
+                added: false,
+                text: '',
+                buttonSign: '+'
+            }]);
         } else {
-            createOrRemoveInput({id: idx, added, text: value}, {id: idx, added, text: value}, false);
+            //remove
+            setAnswersCount(prev => prev.filter((el) => el.id !== id));
         }
     };
 
-    return <li>
-        <input type="text" onChange={e => onChangeInputValue(e.target.value)} />
-        <button disabled={value.trim().length < 1} type="button" onClick={onClickHandler}>{text}</button>
-    </li>
+    useEffect(() => {
+        const arrToCheck = answersCount.map(function(item){ return item.text });
+        const isDuplicate = arrToCheck.some(function(item, idx){
+            return arrToCheck.indexOf(item) !== idx
+        });
+
+        if (isDuplicate) {
+            setAnswersError('You already added this answer.');
+        } else {
+            setAnswersError('');
+        }
+
+        const ans = answersCount.length > 0 ? answersCount.filter(n => (n && n.text.length > 0)).map(a => ({text: a.text})) : null;
+        setForm((prev: NewQuestionEntityInForm) => ({...prev, answers: ans}));
+
+    }, [answersCount]);
+
+    useEffect(() => {
+        const id = String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '');
+        if (answersCount.length === 0) {
+            setAnswersCount([{id, added: false, text: '', buttonSign: '+'}]);
+        }
+    }, []);
+
+    useEffect(() => {
+        setError(answersError);
+    }, [answersError]);
+
+    return <>
+        {
+            answersCount.map(a => <li key={a.id}>
+                <input type="text" value={a.text} onChange={e => onChangeInputValue(a.id, e.target.value)} />
+                <button disabled={a.text.trim().length < 1} type="button"
+                        onClick={() => onClickHandler(a.id, a.text, a.added,)}>{a.buttonSign}</button>
+            </li>)
+        }
+    </>
 }

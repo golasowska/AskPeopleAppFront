@@ -1,20 +1,22 @@
 import {Title} from "../common/Title";
 import {Arrow} from "../common/Arrow";
-import React, {SyntheticEvent, useState} from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 
 import './QuestionForm.scss';
 import '../../styles/form.scss';
 
 import {Button} from "../common/Button";
 import {QuestionAnswer} from "./QuestionAnswer";
-import {AnswerEntityInForm, NewQuestionEntityInForm } from "types";
+import {NewQuestionEntityInForm } from "types";
 import {apiUrl} from "../../config/api";
 import {InfoMessage} from "../common/InfoMessage";
+import {ErrorMessage} from "../common/ErrorMessage";
+import {Link} from "react-router-dom";
 
 export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
     const [id, setId] = useState('');
-    const [answersCount, setAnswersCount] = useState<AnswerEntityInForm[]>([]);
+    const [error, setError] = useState<string>('');
     const [form, setForm] = useState<NewQuestionEntityInForm>({
         name: '',
         type: 'open',
@@ -28,56 +30,56 @@ export const QuestionForm = () => {
         }));
     }
 
-    const changeQuestionType = (value: string) => {
-        updateForm('type', value);
-        if (value !== 'open') {
-            setAnswersCount(prev => [{id: 0, added: true, text: ''}]);
-        }
-    }
-
-    const createOrRemoveInput = (q: AnswerEntityInForm | null, prevQ: AnswerEntityInForm, update: boolean) => {
-        if (q !== null) {
-            //remove
-            setAnswersCount(prev => prev.filter((el) => el.id !== q.id));
-        } else {
-            //add previous question and add new empty question
-            if (update) {
-                setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el)]);
-            } else {
-                setAnswersCount(prev => [...prev.map((el) => el.id === prevQ.id ? prevQ : el), {
-                    id: prev[prev.length - 1].id + 1,
-                    added: true,
-                    text: ''
-                }]);
-            }
-        }
-    };
-
     const submitForm = async (e: SyntheticEvent) => {
+        // @TODO add error messages for name and type!
         e.preventDefault();
+        if (form.name.length < 1 || form.type.length < 1) {
+            return;
+        }
+        if (form.type !== "open" && form.answers === null) {
+            return;
+        }
+        if (form.type !== "open" && form.answers !== null && form.answers.length < 2) {
+            return;
+        }
+        if (error.length > 0) {
+            return;
+        }
         setLoading(true);
-        // @TODO validation!
-        const ans = answersCount.length > 0 ? answersCount.map(a => ({text: a.text})) : null;
-        setForm(form => ({...form, answers: ans}));
-        // console.log(form);
+
         try {
+            // console.log(form);
             const res = await fetch(`${apiUrl}/questions`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...form, answers: ans
-                }),
+                body: JSON.stringify(form),
             });
             const data = await res.json();
             setId(data.id);
         } finally {
             setLoading(false);
-            // setForm(prev => ({...prev, name: '', type: 'open', answers: null}));
-            setAnswersCount([]);
         }
     };
+
+    useEffect(() => {
+        if (form.name.length < 1) {
+            setForm(form => ({
+                ...form,
+                answers: null,
+            }));
+        }
+    }, [form.name]);
+
+    useEffect(() => {
+        if (form.type === "open") {
+            setForm(form => ({
+                ...form,
+                answers: null,
+            }));
+        }
+    }, [form.type]);
 
     if(loading) {
         return <InfoMessage to={true}>Your question is being submitted...</InfoMessage>;
@@ -85,7 +87,7 @@ export const QuestionForm = () => {
 
     if(id) {
         return <InfoMessage to={true}>
-            Your question<span> " {form.name} " </span> has been submitted
+            Your question<span> " <Link to={`/questions/${id}`} >{form.name}</Link> " </span> has been submitted
         </InfoMessage>;
     }
 
@@ -103,39 +105,38 @@ export const QuestionForm = () => {
                         <input
                             type="text"
                             name="name"
-                            required
                             maxLength={99}
                             value={form.name}
                             onChange={e => updateForm('name', e.target.value)}
                         />
                     </label>
                 </div>
-                <div className="form__control">
-                    <label>
-                        Type of question: <br/>
-                        <span className="arrow__select"></span>
-                        <select onChange={e => changeQuestionType(e.target.value)} disabled={form.name.trim().length < 1}>
-                            <option value="open">Open question</option>
-                            <option value="radio">Only one answer</option>
-                            <option value="checkbox">Multiple choice</option>
-                        </select>
-                    </label>
-                </div>
                 {
-                    form.type !== 'open' &&
+                    form.name.length > 0 && <div className="form__control">
+                        <label>
+                            Type of question: <br/>
+                            <span className="arrow__select"></span>
+                            <select onChange={e => updateForm('type', e.target.value)}
+                                    disabled={form.name.trim().length < 1}>
+                                <option value="open">Open question</option>
+                                <option value="radio">Only one answer</option>
+                                <option value="checkbox">Multiple choice</option>
+                            </select>
+                            </label>
+                    </div>
+                }
+                {
+                    form.type !== 'open' && form.name.length > 0 &&
                     <div className="form__control">
                         <label>
-                            Add possible answer: <br/>
+                            Add possible answers ( at least 2 ): <br/>
                             <ol>
-                                {
-                                    answersCount.map((a) => <QuestionAnswer key={a.id} idx={a.id}
-                                                                            createOrRemoveInput={createOrRemoveInput}/>)
-                                }
-
+                                <QuestionAnswer setForm={setForm} setError={setError} />
                             </ol>
                         </label>
                     </div>
                 }
+                {error && <ErrorMessage>{error}</ErrorMessage>}
                 <Button text="Send &#8594;" type="submit"/>
             </form>
         }
