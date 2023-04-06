@@ -7,11 +7,17 @@ import '../../styles/form.scss';
 
 import {Button} from "../common/Button";
 import {QuestionAnswer} from "./QuestionAnswer";
-import {NewQuestionEntityInForm } from "types";
 import {apiUrl} from "../../config/api";
 import {InfoMessage} from "../common/InfoMessage";
 import {ErrorMessage} from "../common/ErrorMessage";
 import {Link} from "react-router-dom";
+
+export interface NewQuestionEntityInForm {
+    id?: string;
+    name: string;
+    type: 'open' | 'radio' | 'checkbox';
+    answers: {text: string}[] | null;
+}
 
 export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);

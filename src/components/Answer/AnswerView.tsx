@@ -64,11 +64,11 @@ export const AnswerView = () => {
                 }
             </div>
             {
-                question.answers === null && <InfoMessage to={false}>Be the first person to answer this question :)</InfoMessage>
+                question.answers === null && <InfoMessage to={false}>1Be the first person to answer this question :)</InfoMessage>
             }
             {(question.answers !== null && question.type === 'open') && <AnswerTextResults formData={question}/>}
-            {((question.answers !== null && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/>}
-            {((question.answers !== null && question.type !== 'open') && !showPie) && <AnswerGraph formData={question}/>}
+            {((question.answers !== null && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/> }
+            {((question.answers !== null && question.type !== 'open') && !showPie) && <AnswerGraph formData={question}/> }
             <div className='title__wrapper border--top'>
                 <Title>Answer a question</Title>
                 <Arrow/>

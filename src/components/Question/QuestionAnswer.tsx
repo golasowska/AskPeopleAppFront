@@ -1,6 +1,6 @@
 import './QuestionAnswer.scss';
 import React, {useEffect, useState} from "react";
-import {NewQuestionEntityInForm} from 'types';
+import {NewQuestionEntityInForm} from "./QuestionForm";
 
 interface Props {
     setForm: any;

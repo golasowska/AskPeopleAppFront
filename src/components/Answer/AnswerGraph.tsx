@@ -60,7 +60,7 @@ export const AnswerGraph = (props: Props) => {
             if (answers) {
                 answers.forEach(a => {
                     labels = [...labels, a.text];
-                    data = [...data, a.votes];
+                    data = typeof a.votes === 'number' ? [...data, a.votes] : [];
                     const color = `${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}`;
                     backgroundColor = [...backgroundColor, `rgba(${color}, 0.5)`];
                     borderColor = [...backgroundColor, `rgba(${color}, 1)`];
