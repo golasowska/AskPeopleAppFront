@@ -8,22 +8,11 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import {Bar} from 'react-chartjs-2';
 
-import {useEffect, useState} from "react";
-import { QuestionEntity } from 'types';
-
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: false,
-        },
-        title: {
-            display: false,
-        },
-    },
-};
+import {useContext, useEffect, useState} from "react";
+import {QuestionEntity} from 'types';
+import {ThemeContext} from "../../contexts/theme.context";
 
 ChartJS.register(
     CategoryScale,
@@ -39,15 +28,58 @@ interface Props {
 
 export const AnswerGraph = (props: Props) => {
 
+    const {theme} = useContext(ThemeContext);
     const {answers} = props.formData;
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+            },
+            title: {
+                display: false,
+            },
+        },
+        scales: {
+            y: {
+                ticks: {
+                    precision: 0,
+                    font: {
+                        size: 18,
+                    },
+                    color: theme === 'light' ? 'red' : 'yellow'
+                },
+                grid: {
+                    color: 'rgb(27, 127,165)',
+                    borderColor: 'rgb(27, 127,165)',
+                    lineWidth: 2,
+                }
+            },
+            x: {
+                ticks: {
+                    font: {
+                        size: 18
+                    },
+                    color: 'red',
+                },
+                grid: {
+                    color: 'rgb(27, 127,165)',
+                    borderColor: 'rgb(27, 127,165)',
+                    lineWidth: 2,
+                }
+            }
+        },
+    };
+
 
     const [data, setData] = useState<any>({
         labels: [],
         datasets: [
             {
-                label: 'Dataset 1',
-                data: [3, 77, 55, 99],
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                label: '',
+                data: [],
+                backgroundColor: [],
             },
         ],
     });
@@ -77,16 +109,16 @@ export const AnswerGraph = (props: Props) => {
                 }]
             }) => ({
                 ...prev, labels,
-                datasets: [{...prev.datasets, data, backgroundColor, borderColor,borderWidth: 2,}]
+                datasets: [{...prev.datasets, data, backgroundColor, borderColor, borderWidth: 2,}]
             }));
         },
         [answers]);
 
-        return <div className="graph__container">
-            <div className="graph__bar">
-                <Bar options={options} data={data} />
-            </div>
-
+    return <div className="graph__container">
+        <div className="graph__bar">
+            <Bar options={options} data={data}/>
         </div>
+
+    </div>
 
 }

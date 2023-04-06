@@ -8,6 +8,19 @@ import { QuestionEntity } from 'types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+            labels: {
+                font: {
+                    size: 20,
+                }
+            }
+        },
+    },
+};
+
 interface Props {
     formData: QuestionEntity;
 }
@@ -20,7 +33,7 @@ export const AnswerGraphPie = (props: Props) => {
         labels: [],
         datasets: [
             {
-                label: '# of Votes',
+                label: '',
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
@@ -61,7 +74,7 @@ export const AnswerGraphPie = (props: Props) => {
 
     return <div className="graph__container">
         <div className="graph__pie">
-            <Pie data={data}/>
+            <Pie data={data} options={options}/>
         </div>
 
     </div>

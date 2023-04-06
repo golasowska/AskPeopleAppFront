@@ -7,11 +7,18 @@ main {
   height: calc(100vh - var(--header-height));
   padding: var(--padding) var(--margin);
   position: relative;
+  @media screen and (orientation: portrait) {
+    justify-content: flex-start;
+    padding-top: 7.5vh;
+  }
   h2 {
     text-transform: uppercase;
-    -webkit-text-stroke: 5px var(--color-text);
+    -webkit-text-stroke: 2px var(--color-text);
     line-height: 0.75;
     position: relative;
+    @media screen and (orientation: portrait) {
+      width: 100%;
+    }
     &:hover {
       cursor: pointer;
     }
@@ -36,6 +43,7 @@ main {
       z-index: 1;
       &:hover {
         color: var(--color-main);
+        z-index: 2;
         span {
           display: block;
         }
@@ -50,11 +58,18 @@ main {
       font-size: clamp(36px, 18vh, 16vw);
       margin-left: auto;
       color: var(--color-main);
+      @media screen and (orientation: portrait) {
+        padding: 7.5vh 0 10vh;
+        line-height: 1;
+      }
     }
 
     &:nth-of-type(3) {
-      font-size: clamp(36px, 30vh, 21.5vw);
+      font-size: clamp(36px, 30vh, 19.5vw);
       z-index: 1;
+      @media screen and (orientation: portrait) {
+        font-size: clamp(36px, 30vh, 21.5vw);
+      }
       &:hover {
         color: var(--color-main);
         span {

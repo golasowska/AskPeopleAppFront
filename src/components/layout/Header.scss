@@ -8,6 +8,13 @@ header {
   column-gap: 20px;
   padding: 0;
   border-bottom: 4px solid var(--color-text);
+  position: relative;
+  z-index: 3;
+
+  .switch {
+    margin-right: auto;
+    margin-left: 0;
+  }
 
   a {
     text-decoration: none;
