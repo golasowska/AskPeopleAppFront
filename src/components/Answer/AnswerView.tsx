@@ -49,7 +49,6 @@ export const AnswerView = () => {
     }
 
     return <>
-        {/*@TODO check if all data is available*/}
         <div className='title__wrapper'>
             <Title>What people said</Title>
             <Arrow/>
@@ -65,7 +64,7 @@ export const AnswerView = () => {
                 }
             </div>
             {
-                question.answers === null && <InfoMessage to={false}>be the first person to answer this question :)</InfoMessage>
+                question.answers === null && <InfoMessage to={false}>Be the first person to answer this question :)</InfoMessage>
             }
             {(question.answers !== null && question.type === 'open') && <AnswerTextResults formData={question}/>}
             {((question.answers !== null && question.type !== 'open') && showPie) && <AnswerGraphPie formData={question}/>}

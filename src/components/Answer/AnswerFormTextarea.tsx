@@ -13,7 +13,12 @@ export const AnswerFormTextarea = (props: Props) => {
     const [answerText, setAnswerText] = useState<string[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setAnswerText([e.target.value]);
+        if (e.target.value.length < 1) {
+            setAnswerText([]);
+        } else {
+            setAnswerText([e.target.value]);
+        }
+
     }
 
     useEffect(() => {

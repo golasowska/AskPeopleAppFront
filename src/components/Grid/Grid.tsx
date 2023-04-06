@@ -16,14 +16,13 @@ export const Grid = () => {
             setQuestions(data);
         })();
     }, []);
-    // @TODO - when using tags, dependency = tag
 
     return <div className="grid">
-        <GridItem>
-            <Link to='/questions/add' className="grid__item--new">+</Link>
+        <GridItem classProp="new">
+            <Link to='/questions/add'>+</Link>
         </GridItem>
         {
-            questions.map(({id, name}, idx) => <GridItem key={id}><Link to={`/questions/${id}`} ><h2>{name}</h2></Link></GridItem>)
+            questions.map(({id, name, type}, idx) => <GridItem classProp={type} key={id}><Link to={`/questions/${id}`} ><h2>{name}</h2></Link></GridItem>)
         }
     </div>
 }

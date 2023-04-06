@@ -17,6 +17,7 @@ export const QuestionForm = () => {
     const [loading, setLoading] = useState(false);
     const [id, setId] = useState('');
     const [error, setError] = useState<string>('');
+    const [nameError, setNameError] = useState<boolean>(false);
     const [form, setForm] = useState<NewQuestionEntityInForm>({
         name: '',
         type: 'open',
@@ -31,9 +32,9 @@ export const QuestionForm = () => {
     }
 
     const submitForm = async (e: SyntheticEvent) => {
-        // @TODO add error messages for name and type!
         e.preventDefault();
         if (form.name.length < 1 || form.type.length < 1) {
+            setNameError(true);
             return;
         }
         if (form.type !== "open" && form.answers === null) {
@@ -110,6 +111,7 @@ export const QuestionForm = () => {
                             onChange={e => updateForm('name', e.target.value)}
                         />
                     </label>
+                    {nameError && form.name.length < 1 && <ErrorMessage>You can't submit empty question</ErrorMessage>}
                 </div>
                 {
                     form.name.length > 0 && <div className="form__control">
@@ -129,7 +131,7 @@ export const QuestionForm = () => {
                     form.type !== 'open' && form.name.length > 0 &&
                     <div className="form__control">
                         <label>
-                            Add possible answers ( at least 2 ): <br/>
+                            Add possible answers (at least 2, max. 8): <br/>
                             <ol>
                                 <QuestionAnswer setForm={setForm} setError={setError} />
                             </ol>

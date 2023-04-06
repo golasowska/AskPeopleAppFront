@@ -1,23 +1,53 @@
 :root {
+  font-size: 18px;
   --padding: 40px;
   --margin: 20px;
   --header-height: 60px;
   --input-height: 60px;
   --color-main: #BAD7E9;
-  --color-main--deep: #2B3467;
-  --color-accent: #FFB84C;
-  --color-error: #F94A29;
+  --color-accent: #F9FA9B;
+  //--color-error: #F94A29;
+  --error-color: #EB455F;
   --color-text: #000;
   --color-gradient: #0000;
   --bg-color: #fff;
-  //--error-color: #EB455F;
-  //@media (prefers-color-scheme: dark) {
-  //  --color-text: #fff;
-  //  --color-gradient: #fff0;
-  //  --bg-color: #000;
-  //  --color-main: #2B3467;
-  //  --color-main--deep: #BAD7E9;
-  //}
+  --grid: 4;
+  --grid-font-size: 32px;
+  --color-radio: #B0CAC7;
+  --color-checkbox: #F7D6BF;
+  --color-open: #318FB5;
+  @media screen and (max-width: 1280px){
+    --padding: 32px;
+  }
+  @media screen and (max-width: 1180px){
+    --grid: 3;
+    --grid-font-size: 28px;
+  }
+  @media screen and (max-width: 860px){
+    --grid-font-size: 24px;
+  }
+  @media screen and (max-width: 769px){
+    --padding: 24px;
+  }
+  @media screen and (max-width: 720px){
+    --grid: 2;
+  }
+  @media screen and (max-width: 520px){
+    --grid: 1;
+  }
+  @media screen and (max-width: 320px){
+    --grid-font-size: 20px;
+  }
+  @media (prefers-color-scheme: dark) {
+    --color-text: #fff;
+    --color-gradient: #fff0;
+    --bg-color: #000;
+    --color-main: #2B3467;
+    --color-accent: #a77741;
+    --color-radio: rgba(61, 107, 123, 0.5);
+    --color-checkbox: #2d5b6d;
+    --color-open: #173854;
+  }
 }
 
 body {
@@ -46,6 +76,7 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 1rem;
 }
 
 .title__wrapper {

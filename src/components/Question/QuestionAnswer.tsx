@@ -1,7 +1,6 @@
 import './QuestionAnswer.scss';
 import React, {useEffect, useState} from "react";
 import {NewQuestionEntityInForm} from 'types';
-import {ErrorMessage} from "../common/ErrorMessage";
 
 interface Props {
     setForm: any;
@@ -24,7 +23,7 @@ export const QuestionAnswer = ({setForm, setError}: Props) => {
     }
 
     const onClickHandler = (id: string, text: string, added: boolean) => {
-        if (text.trim().length < 1 || answersError.length > 0) return;
+        if (text.trim().length < 1 || answersError.length > 0 || (answersCount.length === 8 && !added)) return;
         if (!added) {
             // add
             const idX = String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '');
@@ -71,7 +70,7 @@ export const QuestionAnswer = ({setForm, setError}: Props) => {
     return <>
         {
             answersCount.map(a => <li key={a.id}>
-                <input type="text" value={a.text} onChange={e => onChangeInputValue(a.id, e.target.value)} />
+                <input maxLength={100} type="text" value={a.text} onChange={e => onChangeInputValue(a.id, e.target.value)} />
                 <button disabled={a.text.trim().length < 1} type="button"
                         onClick={() => onClickHandler(a.id, a.text, a.added,)}>{a.buttonSign}</button>
             </li>)

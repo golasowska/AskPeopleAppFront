@@ -22,17 +22,15 @@ export const AnswerForm = (props : Props) => {
 
     const handleSubmitForm = async (e: SyntheticEvent) => {
         e.preventDefault();
-        if (vote.length < 1 || ( formData.type === "open" && vote[0].length < 1)) {
+        if (vote.length < 1) {
             setError(true);
             return;
         }
         submitForm(vote);
         setFormSubmitted(true);
-        // console.log('vote', vote);
     };
 
     useEffect(() => {
-        console.log(vote);
         if (vote.length > 0) {
             setError(false);
         }
