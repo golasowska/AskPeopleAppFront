@@ -10,6 +10,10 @@
   height: 50vmin;
   width: 50vmin;
   margin: 0 auto;
+  @media screen and (orientation: portrait) {
+    height: 75vw;
+    width: 75vw;
+  }
 }
 
 .graph__bar {
