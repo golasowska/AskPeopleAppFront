@@ -9,7 +9,7 @@ import {InfoMessage} from "../common/InfoMessage";
 
 interface Props {
     formData: QuestionEntity;
-    submitForm: any;
+    submitForm: (vote: string[]) => void;
     info: string;
 }
 

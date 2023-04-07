@@ -36,6 +36,14 @@ main {
       color: var(--color-text);
       display: none;
       opacity: 0.9;
+      @media screen and (max-width: 769px) {
+        padding: 10px;
+        font-size: 24px;
+      }
+      @media screen and (max-width: 769px) and (orientation: landscape) {
+        width: 80vw;
+        left: 0;
+      }
     }
 
     &:nth-of-type(1) {
@@ -51,6 +59,9 @@ main {
       span {
         bottom: 0;
         transform: translate(-50%, 120%);
+        @media screen and (max-width: 769px) and (orientation: landscape) {
+          transform: translateY(110%);
+        }
       }
     }
 
@@ -79,7 +90,19 @@ main {
       span {
         top: 0;
         transform: translate(-50%, -120%);
+        @media screen and (max-width: 769px) and (orientation: landscape) {
+          transform: translateY(-110%);
+        }
       }
+    }
+  }
+  .arrow {
+    @media screen and (orientation: portrait) {
+      position: relative;
+      margin-left: auto;
+      right: auto;
+      bottom: auto;
+      margin-top: 5vh;
     }
   }
 }

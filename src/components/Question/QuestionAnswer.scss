@@ -2,6 +2,9 @@ li {
   height: var(--input-height);
   position: relative;
   width: 100%;
+  @media screen and (max-width: 880px){
+    max-width: calc(100% - var(--input-height));
+  }
   input {
     border: none;
     width: 100%;

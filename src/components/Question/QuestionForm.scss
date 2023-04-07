@@ -2,4 +2,7 @@ ol {
   display: flex;
   flex-direction: column;
   row-gap: var(--margin);
+  @media screen and (max-width: 800px){
+    list-style: none;
+  }
 }
