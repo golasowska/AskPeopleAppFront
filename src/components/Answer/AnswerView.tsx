@@ -34,7 +34,7 @@ export const AnswerView = () => {
         })();
     }, []);
 
-    const submitForm = async (vote: string) => {
+    const submitForm = async (vote: string[]) => {
         const res = await fetch(`${apiUrl}/questions/${id}`, {
             method: 'PATCH',
             headers: {

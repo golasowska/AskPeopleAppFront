@@ -1,9 +1,9 @@
-import React from "react";
+import React, {ChangeEventHandler} from "react";
 
 import './Switch.scss';
 
 interface Props {
-    switchState: any;
+    switchState: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const Switch = (props: Props) => {

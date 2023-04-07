@@ -3,23 +3,11 @@ import './AnswerGraph.scss';
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 
 import {Pie} from 'react-chartjs-2';
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import { QuestionEntity } from 'types';
+import {ThemeContext} from "../../contexts/theme.context";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            labels: {
-                font: {
-                    size: 20,
-                }
-            }
-        },
-    },
-};
 
 interface Props {
     formData: QuestionEntity;
@@ -27,7 +15,24 @@ interface Props {
 
 export const AnswerGraphPie = (props: Props) => {
 
+    const {theme} = useContext(ThemeContext);
     const {answers} = props.formData;
+
+    const color = theme === 'light' ? '#000' : '#fff';
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 20,
+                    },
+                    color,
+                }
+            },
+        },
+    };
 
     const [data, setData] = useState<any>({
         labels: [],
@@ -52,8 +57,8 @@ export const AnswerGraphPie = (props: Props) => {
                     labels = [...labels, a.text];
                     data = typeof a.votes === 'number' ? [...data, a.votes] : [];
                     const color = `${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}, ${Math.floor(Math.random() * 251)}`;
-                    backgroundColor = [...backgroundColor, `rgba(${color}, 0.5)`];
-                    borderColor = [...backgroundColor, `rgba(${color}, 1)`];
+                    backgroundColor = [...backgroundColor, `rgb(${color})`];
+                    borderColor = [...backgroundColor, `rgb(${color})`];
                 });
             }
 

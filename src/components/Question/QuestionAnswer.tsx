@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import {NewQuestionEntityInForm} from "./QuestionForm";
 
 interface Props {
-    setForm: any;
-    setError: any;
+    setForm: (s: (prev: NewQuestionEntityInForm) => NewQuestionEntityInForm) => void;
+    setError: (er: string) => void;
 }
 
 interface AnswerEntityInForm {

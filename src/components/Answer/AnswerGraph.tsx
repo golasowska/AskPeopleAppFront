@@ -31,6 +31,8 @@ export const AnswerGraph = (props: Props) => {
     const {theme} = useContext(ThemeContext);
     const {answers} = props.formData;
 
+    const color = theme === 'light' ? '#000' : '#fff';
+
     const options = {
         responsive: true,
         plugins: {
@@ -48,11 +50,11 @@ export const AnswerGraph = (props: Props) => {
                     font: {
                         size: 18,
                     },
-                    color: theme === 'light' ? 'red' : 'yellow'
+                    color,
                 },
                 grid: {
-                    color: 'rgb(27, 127,165)',
-                    borderColor: 'rgb(27, 127,165)',
+                    color,
+                    borderColor: color,
                     lineWidth: 2,
                 }
             },
@@ -61,13 +63,13 @@ export const AnswerGraph = (props: Props) => {
                     font: {
                         size: 18
                     },
-                    color: 'red',
+                    color,
                 },
                 grid: {
-                    color: 'rgb(27, 127,165)',
-                    borderColor: 'rgb(27, 127,165)',
+                    color,
+                    borderColor: color,
                     lineWidth: 2,
-                }
+                },
             }
         },
     };

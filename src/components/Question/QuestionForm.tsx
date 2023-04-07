@@ -30,7 +30,7 @@ export const QuestionForm = () => {
         answers: null,
     });
 
-    const updateForm = (key: string, value: any) => {
+    const updateForm = (key: string, value: string) => {
         setForm(form => ({
             ...form,
             [key]: value,

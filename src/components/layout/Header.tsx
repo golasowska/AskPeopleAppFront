@@ -1,5 +1,5 @@
 import './Header.scss';
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {ThemeContext} from "../../contexts/theme.context";
 import React, {useContext} from "react";
 import {Switch} from "../common/Switch";

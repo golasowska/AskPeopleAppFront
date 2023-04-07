@@ -4,7 +4,7 @@ import {ErrorMessage} from "../common/ErrorMessage";
 
 interface Props {
     name: string;
-    setVote: any;
+    setVote: (vote: string[]) => void;
     error: boolean;
 }
 

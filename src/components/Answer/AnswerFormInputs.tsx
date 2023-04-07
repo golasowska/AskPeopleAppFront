@@ -5,7 +5,7 @@ import {ErrorMessage} from "../common/ErrorMessage";
 
 interface Props {
     formData: QuestionEntity;
-    setVote: any;
+    setVote: (vote: string[]) => void;
     error: boolean;
 }
 
