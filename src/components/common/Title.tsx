@@ -1,7 +1,7 @@
 import './Title.scss';
 
 interface Props {
-    children: string;
+    children: string | JSX.Element;
 }
 
 export const Title = ({children}: Props) => {

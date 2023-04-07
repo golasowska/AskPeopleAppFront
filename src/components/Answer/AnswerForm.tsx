@@ -1,26 +1,51 @@
 import '../../styles/form.scss';
 import React, {SyntheticEvent, useEffect, useState} from "react";
-import {QuestionInterface} from "../../interfaces/question-interface";
 import {Button} from "../common/Button";
 import {AnswerFormTextarea} from "./AnswerFormTextarea";
 import {AnswerFormInputs} from "./AnswerFormInputs";
+import { QuestionEntity } from 'types';
+import {InfoMessage} from "../common/InfoMessage";
 
 
 interface Props {
-    formData: QuestionInterface;
+    formData: QuestionEntity;
+    submitForm: (vote: string[]) => void;
+    info: string;
 }
 
 export const AnswerForm = (props : Props) => {
 
-    const submitForm = (e: SyntheticEvent) => {
+    const [vote, setVote] = useState<string[]>([]);
+    const [error, setError] = useState<boolean>(false);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const { formData, submitForm } = props;
+
+    const handleSubmitForm = async (e: SyntheticEvent) => {
         e.preventDefault();
-        console.log(e);
+        if (vote.length < 1) {
+            setError(true);
+            return;
+        }
+        submitForm(vote);
+        setFormSubmitted(true);
     };
 
-    return <form onSubmit={submitForm}>
+    useEffect(() => {
+        if (vote.length > 0) {
+            setError(false);
+        }
+    }, [vote]);
+
+    if (formSubmitted) {
+        return <InfoMessage to={true}>{props.info}</InfoMessage>;
+    }
+
+    return <form onSubmit={handleSubmitForm}>
                 <div className="form__control">
-                    {props.formData.type === 'open' ? <AnswerFormTextarea name={props.formData.name} /> :
-                        <AnswerFormInputs formData={props.formData} /> }
+                    {props.formData.type === 'open' ?
+                        <AnswerFormTextarea error={error} setVote={setVote} name={formData.name} /> :
+                        <AnswerFormInputs error={error} setVote={setVote} formData={formData} />
+                    }
                 </div>
                 <Button text="Send &#8594;" type="submit"/>
             </form>
